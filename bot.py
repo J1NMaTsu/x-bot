@@ -1,5 +1,4 @@
 import tweepy
-from pytrends.request import TrendReq
 import os
 
 # GitHubのSecretsから鍵を読み込む
@@ -8,11 +7,6 @@ API_SECRET = os.environ["API_SECRET"]
 ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 ACCESS_SECRET = os.environ["ACCESS_SECRET"]
 
-def get_google_trends():
-    pytrends = TrendReq(hl='ja-JP', tz=540)
-    df = pytrends.trending_searches(pn='japan')
-    return df[0].head(5).tolist()
-
 def post_to_x():
     # X APIに接続
     client = tweepy.Client(
@@ -20,16 +14,15 @@ def post_to_x():
         access_token=ACCESS_TOKEN, access_token_secret=ACCESS_SECRET
     )
     
-    trends = get_google_trends()
-    status_text = "【現在のトレンドワード】\n\n"
-    for i, word in enumerate(trends, 1):
-        status_text += f"{i}. {word}\n"
-    status_text += "\n#トレンド #まとめ\n"
-    status_text += "詳しくはこのリンクをクリック→ https://example.com" # ←ここを自分の好きなURLに変える
+    # 投稿するメッセージ
+    status_text = "テスト投稿です！botが正常に動作しています。\n\n詳しくはこのリンクをクリック→ https://example.com"
     
-    # 投稿実行
-    client.create_tweet(text=status_text)
-    print("Successfully posted!")
+    try:
+        # 投稿実行
+        client.create_tweet(text=status_text)
+        print("Successfully posted!")
+    except Exception as e:
+        print(f"エラーが発生しました: {e}")
 
 if __name__ == "__main__":
     post_to_x()
