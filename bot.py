@@ -24,7 +24,8 @@ def post_to_x():
     status_text = "【現在のトレンドワード】\n\n"
     for i, word in enumerate(trends, 1):
         status_text += f"{i}. {word}\n"
-    status_text += "\n#トレンド #まとめ"
+    status_text += "\n#トレンド #まとめ\n"
+    status_text += "詳しくはこのリンクをクリック→ https://example.com" # ←ここを自分の好きなURLに変える
     
     # 投稿実行
     client.create_tweet(text=status_text)
