@@ -1,0 +1,32 @@
+name: X Trend Bot
+
+on:
+  schedule:
+    # 日本時間の毎時0分（UTCだと1時間前）に実行
+    - cron: '0 * * * *'
+  workflow_dispatch: # 手動で動かすボタンを作る設定
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          # GitHubのSecretsに保存した鍵をプログラムに渡す
+          API_KEY: ${{ secrets.API_KEY }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}
+        run: python bot.py
